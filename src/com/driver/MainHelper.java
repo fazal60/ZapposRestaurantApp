@@ -43,100 +43,100 @@ public class MainHelper {
 	public void findItemsToBuy(HashMap<String, HashMap<String, Double>> itemMap, HashMap<String, Integer> futureDateMap)
 	{
 		System.out.println("So your Budget is:"+budget);
-        for(Map.Entry<String, HashMap<String, Double>> ent: itemMap.entrySet())
-        {
-        	Double sum=0.0;
-        	int flag=0;
-        	freeItemsList.clear();
-        	if(futureDateMap.containsKey(ent.getKey()))
-        	{
-        		System.out.println("for Date:"+ent.getKey());
-        		
-        		HashMap<String, Double> gMap=ent.getValue();//all items for a single date
-        		double leastAmount=999.99;
-        		
-        		//Finding the sume total of all prices on menu...... and the items that go for free
-        		for(Map.Entry<String, Double> ten:gMap.entrySet())
-        		{
-        			sum=sum+ten.getValue();
-        			if(ten.getValue()<leastAmount && ten.getValue()>0.0)
-        				leastAmount=ten.getValue();
-        			if(ten.getValue()==0.0)
-        			{
-        				freeItem=ten.getKey();
-        				freeItemsList.add(ten.getKey());
-        			}
-        		}
-        		if(budget==0.0)
-        		{
-        			System.out.println("You Can't buy anything as you have no budget");
-        			continue;
-        		}
-        		else if(sum<=0.0)
-				{
-					System.out.println("You Can't buy anything as Nothing is being sold this day");
+	        for(Map.Entry<String, HashMap<String, Double>> ent: itemMap.entrySet())
+	        {
+	        	Double sum=0.0;
+	        	int flag=0;
+	        	freeItemsList.clear();
+	        	if(futureDateMap.containsKey(ent.getKey()))
+	        	{
+	        		System.out.println("for Date:"+ent.getKey());
+	        		
+	        		HashMap<String, Double> gMap=ent.getValue();//all items for a single date
+	        		double leastAmount=999.99;
+	        		
+	        		//Finding the sume total of all prices on menu...... and the items that go for free
+	        		for(Map.Entry<String, Double> ten:gMap.entrySet())
+	        		{
+	        			sum=sum+ten.getValue();
+	        			if(ten.getValue()<leastAmount && ten.getValue()>0.0)
+	        				leastAmount=ten.getValue();
+	        			if(ten.getValue()==0.0)
+	        			{
+	        				freeItem=ten.getKey();
+	        				freeItemsList.add(ten.getKey());
+	        			}
+	        		}
+	        		if(budget==0.0)
+	        		{
+	        			System.out.println("You Can't buy anything as you have no budget");
 	        			continue;
-				}
-        		else if(sum<=budget)
-        		{
-        			flag=1;
-        		}
-        		if(flag==1)
-        		{
-        			System.out.println("You have enough bucks to buy 'em all!:");
-        			double sumTotal=0.0;
-        			for(Map.Entry<String, Double> ten:gMap.entrySet())
-	        		{
-        				System.out.println(ten.getKey()+":"+ten.getValue());
-        				sumTotal=sumTotal+ten.getValue();
 	        		}
-        			System.out.println("Total Amount spent:"+sumTotal);
-        			System.out.println("You have "+(budget-sum)+" dollars left after purchases on:"+ent.getKey());
-        		}
-        		else
-        		{
-        			double val=0;
-        			if(budget<leastAmount)
+	        		else if(sum<=0.0)
+					{
+						System.out.println("You Can't buy anything as Nothing is being sold this day");
+		        			continue;
+					}
+	        		else if(sum<=budget)
 	        		{
-	        			System.out.println("You don't have sufficient amount to buy even the least expensive item being sold!");
-	        			val=0.0;
+	        			flag=1;
 	        		}
-        			else
-        			{	
-	        			System.out.println("The best combination of items you can buy in the given budget is:");
-	        			sumMap.clear();
-	        			permute("", "", gMap, 4);
-	        			for(Map.Entry<String, Double> lent:sumMap.entrySet())
-	        			{
-	        				if(lent.getValue()>val && lent.getValue()<=budget)
-	        				{
-	        					val=lent.getValue();
-	        				}
+	        		if(flag==1)
+	        		{
+	        			System.out.println("You have enough bucks to buy 'em all!:");
+	        			double sumTotal=0.0;
+	        			for(Map.Entry<String, Double> ten:gMap.entrySet())
+		        		{
+	        				System.out.println(ten.getKey()+":"+ten.getValue());
+	        				sumTotal=sumTotal+ten.getValue();
+		        		}
+	        			System.out.println("Total Amount spent:"+sumTotal);
+	        			System.out.println("You have "+(budget-sum)+" dollars left after purchases on:"+ent.getKey());
+	        		}
+	        		else
+	        		{
+	        			double val=0;
+	        			if(budget<leastAmount)
+		        		{
+		        			System.out.println("You don't have sufficient amount to buy even the least expensive item being sold!");
+		        			val=0.0;
+		        		}
+	        			else
+	        			{	
+		        			System.out.println("The best combination of items you can buy in the given budget is:");
+		        			sumMap.clear();
+		        			permute("", "", gMap, 4);
+		        			for(Map.Entry<String, Double> lent:sumMap.entrySet())
+		        			{
+		        				if(lent.getValue()>val && lent.getValue()<=budget)
+		        				{
+		        					val=lent.getValue();
+		        				}
+		        			}
+		        			
+		        			combMap.clear();
+		        			for(Map.Entry<String, Double> lent:sumMap.entrySet())
+		        			{
+		        				
+		        				if(lent.getValue()==val)
+		        				{
+		        					if(!checkCombo(lent.getKey()))
+		        					{
+		        						System.out.println(lent.getKey());
+		        						for(String freeIt:freeItemsList)
+		        							System.out.println("FREE:"+freeIt);
+		        						
+		        						System.out.println("Total Amount spent:"+lent.getValue());
+		        					}
+		        				}
+		        				
+		        			}
 	        			}
-	        			
-	        			combMap.clear();
-	        			for(Map.Entry<String, Double> lent:sumMap.entrySet())
-	        			{
-	        				
-	        				if(lent.getValue()==val)
-	        				{
-	        					if(!checkCombo(lent.getKey()))
-	        					{
-	        						System.out.println(lent.getKey());
-	        						for(String freeIt:freeItemsList)
-	        							System.out.println("FREE:"+freeIt);
-	        						
-	        						System.out.println("Total Amount spent:"+lent.getValue());
-	        					}
-	        				}
-	        				
-	        			}
-        			}
-        			System.out.println("You have "+(budget-val)+" dollars left after purchases on:"+ent.getKey());
-        		}
-        		System.out.println("----------");
-        	}
-        }
+	        			System.out.println("You have "+(budget-val)+" dollars left after purchases on:"+ent.getKey());
+	        		}
+	        		System.out.println("----------");
+	        	}
+	        }
 	}
 	
 	/**
