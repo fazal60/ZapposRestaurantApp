@@ -1,0 +1,18 @@
+This application reads data from Zappos restaurant API and for a given budget amount entered by the customer
+it suggests the best combination of items he/she can but each day from a given date till the date for which
+menu has been decided.
+
+I have left the option open to enter a custom date. Ideally the application should only suggest combination
+of items for the current date and all dates after current date till the day for which menu has been decided.
+
+Program asks for a date to be entered in YYYY-MM-DD format.
+Command Line arguments: args[0] is your budget, all arguments after this are list of restricted items you don't want to buy
+
+You can choose to either give command line arguments or choose not to
+in which case budget is assumed to be 0.0 and no items are assumed to be
+excluded.
+Also, one can give as may items to exclude as possible( given that
+those items are present).
+On being successfully run, the applications displays the combination of
+items one can buy today and on future dates as per the given information in
+the JSON data contained in the provided URL.
