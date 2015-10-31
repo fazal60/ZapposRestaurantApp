@@ -57,9 +57,9 @@ public class FetchRecords
 		BufferedReader in = new BufferedReader(new InputStreamReader(
                 yc.getInputStream()));
 		while ((inputLine = in.readLine()) != null) 
-        {
-            this.str=this.str+inputLine;
-        }
+        	{
+            		this.str=this.str+inputLine;
+        	}
 		in.close();
 		
 	}
@@ -79,76 +79,76 @@ public class FetchRecords
 	{
 		MainHelper mainObj=new MainHelper(budget);
 		//reading JSON data from the given URL
-        JSONObject first = new JSONObject(this.str);
-        // contains one object
-        JSONArray locArr = first.getJSONArray("menus");
-        for(int i=0;i<locArr.length();i++)
-        {
-        	JSONObject locArrObj = locArr.getJSONObject(i); // cotains one "out" array
-        	String dateObj = locArrObj.getString("date");
-        	String menuId = locArrObj.getString("menuId");
-        	JSONArray conferenceLocArr = locArrObj.getJSONArray("items");
-	        // this array has two objects and each object has array
-	        JSONObject o = null;
-	        
-	        
-	        String dateInString=dateObj.substring(0,10);
-	        if(dateInString.compareTo(nDate)>=0)
-	        	futureDateMap.put(dateInString, 1);
-	        
-	        MenuItems miObj=new MenuItems();
-	        
-	        for (int j = 0; j < conferenceLocArr.length(); j++)
+        	JSONObject first = new JSONObject(this.str);
+        	// contains one object
+        	JSONArray locArr = first.getJSONArray("menus");
+        	for(int i=0;i<locArr.length();i++)
+        	{
+	        	JSONObject locArrObj = locArr.getJSONObject(i); // cotains one "out" array
+	        	String dateObj = locArrObj.getString("date");
+	        	String menuId = locArrObj.getString("menuId");
+	        	JSONArray conferenceLocArr = locArrObj.getJSONArray("items");
+		        // this array has two objects and each object has array
+		        JSONObject o = null;
+		        
+		        
+		        String dateInString=dateObj.substring(0,10);
+		        if(dateInString.compareTo(nDate)>=0)
+		        	futureDateMap.put(dateInString, 1);
+		        
+		        MenuItems miObj=new MenuItems();
+		        
+		        for (int j = 0; j < conferenceLocArr.length(); j++)
+		        {
+		           o = conferenceLocArr.getJSONObject(j); // it has one array
+	
+		           if(!o.getString("price").trim().replace("\"", "").equalsIgnoreCase("Free") && !o.getString("price").replace("$", "").equalsIgnoreCase("nothing"))
+		           {
+		        	   if(!mainObj.isExcluded(o.getString("name"),excludeList))
+		        		     miObj.setItem(o.getString("name"), Double.parseDouble(o.getString("price").replace("$", "")));;
+		           }
+		           else
+		           {
+		        	   if(!mainObj.isExcluded(o.getString("name"),excludeList))
+		        		   miObj.setItem(o.getString("name"), 0.0);
+		           }
+		        }
+		        
+		        if(!map.containsKey(dateInString+","+menuId))
+		        		map.put(dateInString+","+menuId, miObj);
+		        else
+		        	System.out.println("date already present:"+dateObj);
+		        cnt++;
+        	}
+        
+	        for(Map.Entry<String, MenuItems> ent: map.entrySet())
 	        {
-	           o = conferenceLocArr.getJSONObject(j); // it has one array
-
-	           if(!o.getString("price").trim().replace("\"", "").equalsIgnoreCase("Free") && !o.getString("price").replace("$", "").equalsIgnoreCase("nothing"))
-	           {
-	        	   if(!mainObj.isExcluded(o.getString("name"),excludeList))
-	        		     miObj.setItem(o.getString("name"), Double.parseDouble(o.getString("price").replace("$", "")));;
-	           }
-	           else
-	           {
-	        	   if(!mainObj.isExcluded(o.getString("name"),excludeList))
-	        		   miObj.setItem(o.getString("name"), 0.0);
-	           }
+	        	String dt=ent.getKey().split(",")[0];
+	        	if(!itemMap.containsKey(dt))
+	        	{
+	        		MenuItems gObj=ent.getValue();
+		        	HashMap<String, Double> iMap=gObj.getItem();
+		        	HashMap<String, Double> newMap=new HashMap<String, Double>();
+		        	for(Map.Entry<String, Double> val: iMap.entrySet())
+			        {
+		        		newMap.put(val.getKey(), val.getValue());
+			        }
+		        	
+		        	itemMap.put(dt, newMap);
+	        	}
+	        	else
+	        	{
+	        		HashMap<String, Double> getMap=itemMap.get(dt);
+	        		MenuItems gObj=ent.getValue();
+		        	HashMap<String, Double> iMap=gObj.getItem();
+		        	for(Map.Entry<String, Double> val: iMap.entrySet())
+			        {
+		        		getMap.put(val.getKey(), val.getValue());
+			        }
+	        	}
 	        }
 	        
-	        if(!map.containsKey(dateInString+","+menuId))
-	        		map.put(dateInString+","+menuId, miObj);
-	        else
-	        	System.out.println("date already present:"+dateObj);
-	        cnt++;
-        }
-        
-        for(Map.Entry<String, MenuItems> ent: map.entrySet())
-        {
-        	String dt=ent.getKey().split(",")[0];
-        	if(!itemMap.containsKey(dt))
-        	{
-        		MenuItems gObj=ent.getValue();
-	        	HashMap<String, Double> iMap=gObj.getItem();
-	        	HashMap<String, Double> newMap=new HashMap<String, Double>();
-	        	for(Map.Entry<String, Double> val: iMap.entrySet())
-		        {
-	        		newMap.put(val.getKey(), val.getValue());
-		        }
-	        	
-	        	itemMap.put(dt, newMap);
-        	}
-        	else
-        	{
-        		HashMap<String, Double> getMap=itemMap.get(dt);
-        		MenuItems gObj=ent.getValue();
-	        	HashMap<String, Double> iMap=gObj.getItem();
-	        	for(Map.Entry<String, Double> val: iMap.entrySet())
-		        {
-	        		getMap.put(val.getKey(), val.getValue());
-		        }
-        	}
-        }
-        
-        mainObj.findItemsToBuy(itemMap, futureDateMap);
-	}
+	        mainObj.findItemsToBuy(itemMap, futureDateMap);
+		}
 
 }
