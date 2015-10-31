@@ -26,7 +26,7 @@ public class Main {
 		Scanner scan=new Scanner(System.in);
 		URLConnector instance=URLConnector.getInstance();
 		URLConnection yc=instance.getConnection();
-		System.out.println("Enter a sample date:");
+		System.out.println("Enter a sample date:(YYYY-MM-DD)");
         String nDate = scan.next();
         double budget=0.0;
         
