@@ -1,18 +1,44 @@
-This application reads data from Zappos restaurant API and for a given budget amount entered by the customer
-it suggests the best combination of items he/she can but each day from a given date till the date for which
-menu has been decided.
+What does this Application Do?
+------------------------------
+  This application reads data from Zappos restaurant API and for a given budget amount entered by the customer
+  it suggests the best combination of items he/she can but each day from a given date till the date for which
+  menu has been decided.
 
-I have left the option open to enter a custom date. Ideally the application should only suggest combination
-of items for the current date and all dates after current date till the day for which menu has been decided.
+How does it work?
+-----------------
+  -The option to enter a custom date has been left open. Ideally the application should only suggest combination
+   of items for the current date and all dates after current date till the day for which menu has been decided.
+  -Program asks for a date to be entered in YYYY-MM-DD format.
+  -Command Line arguments: args[0] is the customer's budget, all arguments after this are list of restricted items customer
+   doesn't want to buy.
+  -Customer can choose to either give command line arguments or choose not to
+   in which case budget is assumed to be 0.0 and no items are assumed to be
+   excluded.
+  -Also, one can give as may items to exclude as possible( given that
+   those items are present).
+  -On being successfully run, the applications displays the combination of
+   items one can buy today and on future dates as per the given information in
+   the JSON data contained in the provided URL.
 
-Program asks for a date to be entered in YYYY-MM-DD format.
-Command Line arguments: args[0] is your budget, all arguments after this are list of restricted items you don't want to buy
+Instructions to Run:
+--------------------
+  -The attachment is named Zappos.zzz. Please rename it to Zappos.zip to
+   extract it. I was not able to send the file using .zip extension as Gmail
+   continued blocking it.
+  -Extract the Zip file. It should give a folder named Zappos.
+  -Open terminal, change directory to Navigate to the folder.
+  -Compile the Main file using *javac -cp java-json.jar ZTMain.java *
+  -Run the project using* java -cp java-json.jar: ZTMain 5 wing. *Here 5
+   indicates the daily budget and wing is the item to exclude.
+   You can choose to either give command line arguments or choose not to
+   in which case budget is assumed to be 0.0 and no items are assumed to be
+   excluded.
+   Also, one can give as may items to exclude as possible( given that
+   those items are present).
+   On being successfully run, the applications displays the combination of
+   items one can buy today and on future dates as per the given information in
+   the JSON data contained in the provided URL.
 
-You can choose to either give command line arguments or choose not to
-in which case budget is assumed to be 0.0 and no items are assumed to be
-excluded.
-Also, one can give as may items to exclude as possible( given that
-those items are present).
-On being successfully run, the applications displays the combination of
-items one can buy today and on future dates as per the given information in
-the JSON data contained in the provided URL.
+Contact:
+--------
+  Send an email to msheikh2@buffalo.edu
