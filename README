@@ -22,9 +22,6 @@ How does it work?
 
 Instructions to Run:
 --------------------
-  -The attachment is named Zappos.zzz. Please rename it to Zappos.zip to
-   extract it. I was not able to send the file using .zip extension as Gmail
-   continued blocking it.
   -Extract the Zip file. It should give a folder named Zappos.
   -Open terminal, change directory to Navigate to the folder.
   -Compile the Main file using *javac -cp java-json.jar ZTMain.java *
